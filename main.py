@@ -41,34 +41,59 @@ def ls(data):
         except:
             pass
     longestFolderName = 4
+    longestViewName = 5
     longestIDName = 2
+    longestPermName = 4
     for folder in folders:
         folderNameLen = len(folder["name"])
         folderIDLen = len(str(folder["id"]))
+        folderViewLen = len(str(folder["view_count"]))
+        folderPermLen = len(str(folder["permissions"]))
         if folderNameLen > longestFolderName:
             longestFolderName = folderNameLen
         if folderIDLen > longestIDName:
             longestIDName = folderIDLen
+        if folderViewLen > longestViewName:
+            longestViewName = folderViewLen
+        if folderPermLen > longestPermName:
+            longestPermName = folderPermLen
     print(bcolors.WARNING + "Name" + bcolors.ENDC, end="")
     for i in range(0, longestFolderName):
         print(" ", end="")
     print(bcolors.WARNING + "id" + bcolors.ENDC, end="")
-    for i in range(0, longestIDName):
+    for i in range(-1, longestIDName):
         print(" ", end="")
-    print(bcolors.WARNING + "share" + bcolors.ENDC)
+    print(bcolors.WARNING + "share" + bcolors.ENDC, end="")
+    for i in range(0, longestViewName):
+        print(" ", end="")
+    print(bcolors.WARNING + "views" + bcolors.ENDC, end="")
+    for i in range(0, longestPermName):
+        print(" ", end="")
+    print(bcolors.WARNING + "perm" + bcolors.ENDC)
+    # print(folders[0])
     for folder in folders:
         folderNameLen = len(folder["name"])
         folderIDLen = len(str(folder["id"]))
+        folderViewLen = len(str(folder["view_count"]))
+        folderPermLen = len(str(folder["permissions"]))
         print(bcolors.OKGREEN + folder["name"] + bcolors.ENDC, end="")
-        for i in range(0 - indent, longestFolderName - folderNameLen):
+        for i in range(-1 - indent, longestFolderName - folderNameLen):
             print(" ", end="")
         print(folder["id"], end="")
         for i in range(0 - indent, longestIDName - folderIDLen):
             print(" ", end="")
         if folder["shared"]:
-            print(bcolors.OKGREEN + "  +" + bcolors.ENDC)
+            print(bcolors.OKGREEN + "  +" + bcolors.ENDC, end='')
         else:
-            print(bcolors.FAIL + "  -" + bcolors.ENDC)
+            print(bcolors.FAIL + "  -" + bcolors.ENDC, end='')
+        for i in range(0 - indent, longestViewName - folderViewLen):
+            print(" ", end="")
+        print(folder["view_count"], end="")
+        for i in range(-5 - indent, longestPermName - folderPermLen):
+            print(" ", end="")
+        if folder["permissions"] == "write":
+            print(" ", end="")
+        print(folder["permissions"])
 
 
 def get(adr, TOKEN):
