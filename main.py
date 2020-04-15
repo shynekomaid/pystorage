@@ -391,7 +391,7 @@ def ls(data):
                     print(" ", end="")
                 print(human_date)
     except:
-        print(bcolors.FAIL + str(data[1]) + " is invalid folder id!" + bcolors.ENDC)
+        print(bcolors.FAIL + "Invalid folder id!" + bcolors.ENDC)
         return 1
 
 
