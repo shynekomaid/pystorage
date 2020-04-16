@@ -4,6 +4,8 @@ import json
 from os import system, name
 from datetime import datetime
 
+import wget
+
 indent = 3
 
 
@@ -14,12 +16,16 @@ def clear():
         system('clear')
 
 
+class short:
+    id = {}
+
+
 def promt():
     promt = input("> ")
     if promt == "exit":
         exit(0)
     elif promt[0:2] == "ls":
-        ls(promt[3:])
+        short.id = ls(promt[3:])
     elif promt[0:3] == "pwd":
         pwd()
     elif promt[0:5] == "clear":
@@ -28,6 +34,8 @@ def promt():
         cd(promt[3:])
     elif promt[0:2] == "fs":
         fs()
+    elif promt[0:3] == "get":
+        getFile(promt[4:])
 
 
 class path:
@@ -205,6 +213,7 @@ def fs():
 
 
 def ls(data):
+    shortID = {}
     pwd()
     params = ""
     if data != "":
@@ -302,6 +311,7 @@ def ls(data):
         if len(files) > 0:
             print(bcolors.FAIL + "FILES" + bcolors.ENDC)
             for file in files:
+                shortID.update({str(file["content"]["document"]["document"]["id"]): str(file["id"])})
                 human_size = file["content"]["document"]["document"]["size"]
                 human_size_type = "B"
                 if human_size > 1024:
@@ -390,9 +400,30 @@ def ls(data):
                 for i in range(-2 - indent, Longest.Files.views - CurrentLen.Files.views):
                     print(" ", end="")
                 print(human_date)
+        return shortID
     except:
         print(bcolors.FAIL + "Invalid folder id!" + bcolors.ENDC)
         return 1
+
+
+def getFile(data):
+    try:
+        id = short.id[str(data)]
+    except:
+        pass
+    try:
+        # req = get("of/" + str(id), TOKEN)
+        req = json.loads(get("of/" + str(id), TOKEN).content.decode())
+        print(req)
+    except:
+
+        pass
+    try:
+
+        wget.download(req["l"], req["name"])
+        print()
+    except:
+        pass
 
 
 def get(adr, TOKEN):
